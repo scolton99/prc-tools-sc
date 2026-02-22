@@ -11,6 +11,7 @@ depends=('bash' 'libgcc' 'glibc')
 makedepends=('flex' 'bison' 'gcc49')
 optdepends=('palm-os-sdk-git')
 options=('!libtool' 'staticlibs' '!buildflags')
+conflicts=('prc-tools-remix')
 source=(
   "prc-tools-$pkgver.tar.gz::https://master.dl.sourceforge.net/project/prc-tools/prc-tools/$pkgver/prc-tools-$pkgver.tar.gz?viasf=1"
   "https://ftp.gnu.org/gnu/gcc/gcc-2.95.3.tar.gz"
