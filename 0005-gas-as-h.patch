@@ -1,0 +1,23 @@
+--- binutils-2.14/gas/as.h	2003-01-23 19:12:30.000000000 -0600
++++ binutils-2.14/gas/as.h	2026-02-22 03:53:19.548949561 -0600
+@@ -595,7 +595,19 @@
+ struct expressionS;
+ struct fix;
+ typedef struct symbol symbolS;
+-struct relax_type;
++struct relax_type
++{
++  /* Forward reach. Signed number. > 0.  */
++  long rlx_forward;
++  /* Backward reach. Signed number. < 0.  */
++  long rlx_backward;
++
++  /* Bytes length of this address.  */
++  unsigned char rlx_length;
++
++  /* Next longer relax-state.  0 means there is no 'next' relax-state.  */
++  relax_substateT rlx_more;
++};
+ typedef struct frag fragS;
+ 
+ #ifdef BFD_ASSEMBLER

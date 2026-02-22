@@ -1,0 +1,14 @@
+--- prc-tools-2.3/tools/binres.cpp	2003-04-29 07:39:52.000000000 -0500
++++ prc-tools-2.3/tools/binres.cpp	2026-02-22 03:53:20.100411067 -0600
+@@ -33,7 +33,11 @@
+ #include <stdio.h>
+ #include <string.h>
+ 
++// Prototype of basename in libiberty conflicts with declaration in standard
++// string.h.
++#define basename dummy_basename_prototype
+ #include "libiberty.h"
++#undef basename
+ #include "bfd.h"
+ 
+ #include "pfd.hpp"

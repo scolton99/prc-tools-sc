@@ -1,0 +1,35 @@
+--- prc-tools-2.3/Makefile.in	1999-06-22 17:44:42.000000000 -0500
++++ prc-tools-2.3/Makefile.in	2026-02-22 06:22:01.702369006 -0600
+@@ -58,7 +58,7 @@
+ BUILT_GCC = $(BUILT_GCC_DIR)/xgcc$(exeext)
+ INSTALLED_TARGET_GCC = @target_alias@-gcc$(exeext)
+ 
+-target_gcc_flags = @target_gcc_flags@
++target_gcc_flags = @target_gcc_flags@ MAKEINFO=
+ targetlib_flags = @targetlib_flags@
+ 
+ # Target libraries will be built against the bootstrap headers.  You can
+--- gcc-2.95.3/gcc/Makefile.in	2026-02-22 08:34:49.297877431 -0600
++++ gcc-2.95.3/gcc/Makefile.in	2026-02-22 03:53:19.691949930 -0600
+@@ -2590,19 +2590,8 @@
+ # Install the info files.
+ # $(INSTALL_DATA) might be a relative pathname, so we can't cd into srcdir
+ # to do the install.
+-install-info: doc installdirs lang.install-info
+-	-rm -f $(infodir)/cpp.info* $(infodir)/gcc.info*
+-	for f in cpp.info* gcc.info*; do \
+-	    $(INSTALL_DATA) $$f $(infodir)/$$f; \
+-	done
+-	-if $(SHELL) -c 'install-info --version' >/dev/null 2>&1; then \
+-	  if [ -f $(infodir)/dir ] ; then \
+-	    for f in cpp.info gcc.info; do \
+-		install-info --dir-file=$(infodir)/dir $(infodir)/$$f; \
+-	    done; \
+-	  else true; fi; \
+-	else true; fi;
+-	-chmod a-x $(infodir)/cpp.info* $(infodir)/gcc.info*
++install-info:
++	@echo "Skipping install-info"
+ 
+ # Install the man pages.
+ install-man: installdirs $(srcdir)/gcc.1 $(srcdir)/cccp.1 lang.install-man

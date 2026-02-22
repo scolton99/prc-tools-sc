@@ -1,0 +1,29 @@
+--- gdb-5.3/include/obstack.h	2001-03-13 20:27:43.000000000 -0600
++++ gdb-5.3/include/obstack.h	2026-02-21 14:18:10.891945605 -0600
+@@ -110,6 +110,8 @@
+ #ifndef _OBSTACK_H
+ #define _OBSTACK_H 1
+ 
++#define LV(type,lvalue) (*((type*)((void*)(&lvalue))))
++
+ #ifdef __cplusplus
+ extern "C" {
+ #endif
+@@ -423,7 +425,7 @@
+ ({ struct obstack *__o = (OBSTACK);					\
+    if (__o->next_free + sizeof (void *) > __o->chunk_limit)		\
+      _obstack_newchunk (__o, sizeof (void *));				\
+-   *((void **)__o->next_free)++ = ((void *)datum);			\
++   *(LV(void **,__o->next_free))++ = ((void *)datum);			\
+    (void) 0; })
+ 
+ # define obstack_int_grow(OBSTACK,datum)				\
+@@ -431,7 +433,7 @@
+ ({ struct obstack *__o = (OBSTACK);					\
+    if (__o->next_free + sizeof (int) > __o->chunk_limit)		\
+      _obstack_newchunk (__o, sizeof (int));				\
+-   *((int *)__o->next_free)++ = ((int)datum);				\
++   *(LV(int *,__o->next_free))++ = ((int)datum);				\
+    (void) 0; })
+ 
+ # define obstack_ptr_grow_fast(h,aptr) (*((void **) (h)->next_free)++ = (void *)aptr)

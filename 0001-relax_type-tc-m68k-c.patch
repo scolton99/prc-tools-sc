@@ -1,0 +1,11 @@
+--- binutils-2.14/gas/config/tc-m68k.c	2026-02-22 03:21:16.614423384 -0600
++++ binutils-2.14/gas/config/tc-m68k.c	2026-02-21 15:04:13.333740836 -0600
+@@ -473,7 +473,7 @@
+    Which mode to go to if the offset won't fit in this one
+ 
+    Please check tc-m68k.h:md_prepare_relax_scan if changing this table.  */
+-relax_typeS md_relax_table[] =
++struct relax_type md_relax_table[] =
+ {
+   {   127,   -128,  0, TAB (BRANCHBWL, SHORT) },
+   { 32767, -32768,  2, TAB (BRANCHBWL, LONG) },

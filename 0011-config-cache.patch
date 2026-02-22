@@ -1,0 +1,22 @@
+--- prc-tools-2.3/configure.in	2003-06-12 12:38:54.000000000 -0500
++++ prc-tools-2.3/configure.in	2026-02-22 03:53:20.095397840 -0600
+@@ -128,7 +128,7 @@
+   done
+ 
+   # Ensure that the different targets use different caches
+-  configure_args="$configure_args --cache-file=config.cache"
++  configure_args="$configure_args --cache-file=$cache_file"
+ 
+   extra_dependencies=Makefile.extradeps
+   > $extra_dependencies
+--- prc-tools-2.3/configure	2003-06-12 12:38:54.000000000 -0500
++++ prc-tools-2.3/configure	2026-02-22 03:53:20.095397840 -0600
+@@ -778,7 +778,7 @@
+   done
+ 
+   # Ensure that the different targets use different caches
+-  configure_args="$configure_args --cache-file=config.cache"
++  configure_args="$configure_args --cache-file=$cache_file"
+ 
+   extra_dependencies=Makefile.extradeps
+   > $extra_dependencies
