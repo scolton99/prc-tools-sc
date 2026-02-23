@@ -1,0 +1,41 @@
+
+compilers:
+
+  - description: M68k PalmOS GCC
+    match-sources: ".*\\.c"
+    match-language: C
+    match-compiler-exe: "(.*/)?m68k-palmos-gcc(\\.exe)?"
+    code-insight-target-name: m68k
+    include-dirs: ["${compiler-exe-dir}/../include","/opt/palmdev/sdk-3.5/include","/opt/palmdev/sdk-3.5/include/Libraries","/opt/palmdev/sdk-3.5/include/Libraries/PalmOSGlue","/opt/palmdev/sdk-3.5/include/Libraries/INet","/opt/palmdev/sdk-3.5/include/Dynamic","/opt/palmdev/sdk-3.5/include/Core","/opt/palmdev/sdk-3.5/include/Core/System","/opt/palmdev/sdk-3.5/include/Core/System/Unix","/opt/palmdev/sdk-3.5/include/Core/Hardware","/opt/palmdev/sdk-3.5/include/Core/UI"]
+    defines-text: "
+#define __STDC_VERSION__ 199409L
+#define __STDC__ 1
+#define __GNUC__ 2
+#define __GNUC_MINOR__ 95
+#define __VERSION__ \"2.95.3-kgpd 20010315 (release)\"
+#define __REGISTER_PREFIX__ %
+#define __USER_LABEL_PREFIX__
+#define __SIZE_TYPE__ long unsigned int
+#define __PTRDIFF_TYPE__ long int
+#define __WCHAR_TYPE__ long int
+#define __INT_MAX__ 32767
+"
+  - description: M68k PalmOS G++
+    match-sources: ".*\\.cpp"
+    match-language: CPP
+    match-compiler-exe: "(.*/)?m68k-palmos-g++(\\.exe)?"
+    code-insight-target-name: m68k
+    include-dirs: ["${compiler-exe-dir}/../include","/opt/palmdev/sdk-3.5/include","/opt/palmdev/sdk-3.5/include/Libraries","/opt/palmdev/sdk-3.5/include/Libraries/PalmOSGlue","/opt/palmdev/sdk-3.5/include/Libraries/INet","/opt/palmdev/sdk-3.5/include/Dynamic","/opt/palmdev/sdk-3.5/include/Core","/opt/palmdev/sdk-3.5/include/Core/System","/opt/palmdev/sdk-3.5/include/Core/System/Unix","/opt/palmdev/sdk-3.5/include/Core/Hardware","/opt/palmdev/sdk-3.5/include/Core/UI"]
+    defines-text: "
+#define __STDC_VERSION__ 199409L
+#define __STDC__ 1
+#define __GNUC__ 2
+#define __GNUC_MINOR__ 95
+#define __VERSION__ \"2.95.3-kgpd 20010315 (release)\"
+#define __REGISTER_PREFIX__ %
+#define __USER_LABEL_PREFIX__
+#define __SIZE_TYPE__ long unsigned int
+#define __PTRDIFF_TYPE__ long int
+#define __WCHAR_TYPE__ long int
+#define __INT_MAX__ 32767
+"

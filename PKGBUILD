@@ -12,10 +12,12 @@ makedepends=('flex' 'bison')
 optdepends=('palm-os-sdk-git')
 options=('!libtool' 'staticlibs' '!buildflags' 'debug')
 conflicts=('prc-tools-remix')
+provides=('prc-tools')
 source=(
   "prc-tools-$pkgver.tar.gz::https://master.dl.sourceforge.net/project/prc-tools/prc-tools/$pkgver/prc-tools-$pkgver.tar.gz?viasf=1"
   "https://ftp.gnu.org/gnu/gcc/gcc-2.95.3.tar.gz"
-  "https://ftp.gnu.org/gnu/gcc/gcc-3.3.1/gcc-3.3.1.tar.bz2"
+  "https://ftp.gnu.org/gnu/gcc/gcc-3.3.1/gcc-core-3.3.1.tar.bz2"
+  "https://ftp.gnu.org/gnu/gcc/gcc-3.3.1/gcc-g++-3.3.1.tar.bz2"
   "https://ftp.gnu.org/gnu/gdb/gdb-5.3.tar.gz"
   "https://ftp.gnu.org/gnu/binutils/binutils-2.14.tar.bz2"
   "0000-relax_type-tc-m68k-h.patch"
@@ -31,10 +33,14 @@ source=(
   "0010-gcc3-decl-c.patch"
   "0011-config-cache.patch"
   "0012-basename.patch"
+  "0013-destdir.patch"
+  "M86k-PalmOS-GNU.yaml"
 )
+
 sha512sums=('d8dae2c03c4ec7ce1ec4ac2a72f301cce820daf0798114d5e12dbc6d5be278816b87609762c48c04e9d8485b93a4818cb6ad3daa7d762595e256117f68f14bf8'
             '50eb27613d5099bbcf2391b11d9818a7ff61f14fa0a01a04f956ce961cf59ccd32c4d7349ea18fdf29c2bec9126c3bda13e13715910b387c25b1bea1a557f485'
-            'a5ddb813a9cc25900f530d7a8248e2267956d423a3109cc9b342d3ab169dfbaf88207ac5f0d72e995d1fa66e6bce9b118a45615ccb2ffe004e3181bd173125ac'
+            'dac9c40fa301f5bbf7319a1b359c75e46c78ac1c057ffe3734c8b80b00ca3175d8ccf39efdf461d8b060375519c77340d64af47da306be327fbf96a6d399e463'
+            '8ca95e613c91c5d3064704745a68160b5e829528645d08657e78a2000bd491db20ec8adb6a6fa53c124270467d96ee650e72422f0e11f5ede819d0e61ffb4f2d'
             'd887296078bf150922953f5d59f330a55f5d7820337884a4cefd4a19607bd7f0ad9e93edb43cc042d21d8303c67c276bec2a9a9289342e0eb8c0579bf7e402cd'
             'e54772795dd91eaba77f18d348d7c94d275b50d54ee7d4a77d9ed2cbdc3943e9603decd6cdbe4be10d444624e671e3aa9e9ad365fa0c7f88d8f35898e8b3ba8c'
             '0822baa65cb10c5ac74069772c3407bc922b9ff68c00221444f143dd0dd855f2e69b67a2b3881cd6a3fc2cf7a8b0084424b63ba909eb5ef528c3b08aa888bb35'
@@ -48,11 +54,42 @@ sha512sums=('d8dae2c03c4ec7ce1ec4ac2a72f301cce820daf0798114d5e12dbc6d5be278816b8
             '418bddf3f8dc409e2f010071ed1ea2d580a02c9e93955a28c609bc02f9f5968ccbdd472dc5c7cf428f09ee726639f73a128f0e22434b1946b64bb05009980c55'
             '812559c66a812a391c83901cd951cef5f3e47d3bd7bf10cc64d4d410473bf6bba75635cfefdfe9305e7ef4a07c0940b557d2fa7d9b46be8dd860e35627073f23'
             'abad834fd77ab21ceea3377c83e04bc20c5223e5895447dfa60dd61fc666d7c49fc99394c4ac6cc24405dc1d22cf24e73c477e8d9a9eebe79fef23ff7e28cf18'
-            '150d98aa6b67620551025170e7f6eb125d2eb08a18aa71e9fcb619dc61671fa89909d457fde86afbe27ecc9a372a67a73075434055ab9501e9d791fd6700ca7e'
-            'b8000b51effe2ad34e11556865de443af0a528ad8bf63c9daf386bd168bca501684ee2dde8074cffe89d028ee8b8f1e1ab2ce8431c6a02a9b812edeaf6952127')
+            '06841daccaad3eca1088ab28d66a6ef5f90cf42c31bdff044cb25388a3a66e3c3bd547ad3b057311da31f23a1cdcf4439748c759d8021d82373295236d968bee'
+            'b8000b51effe2ad34e11556865de443af0a528ad8bf63c9daf386bd168bca501684ee2dde8074cffe89d028ee8b8f1e1ab2ce8431c6a02a9b812edeaf6952127'
+            '3c155609236166ba6a4545a4d55a9ec121a2caff8a6c1512eb4df9609913e27189358fcbde451ddfcb15ab698900d37da7fdcac476a2ec2d29eb263292ea30fc'
+            '7fb3dab2bdbf7cddd2fce883964a76e001816c4d9c147e9892574fc1beafb7f44e949bd21380bfcb32d203a3cb7dbc829ed2c6748d66e20d8d453cc41cae4b85')
 
 prepare() {
-  cat prc-tools-"$pkgver"/*.palmos.diff | patch -p0
+  rm -f \
+    gcc-3.3.1/gcc/config/arm/palmos.h \
+    gcc-3.3.1/gcc/config/palmos.h \
+    gcc-3.3.1/gcc/config/t-palmos \
+    gdb-5.3/gdb/ChangeLog.palmos \
+    gdb-5.3/gdb/config/m68k/palmos.mt \
+    gdb-5.3/gdb/config/m68k/tm-palmos.h \
+    gdb-5.3/gdb/remote-palmos.c \
+    binutils-2.14/ChangeLogs.palmos \
+    binutils-2.14/bfd/prc-arm.c \
+    binutils-2.14/bfd/prc-m68k.c \
+    binutils-2.14/bfd/prc.c \
+    binutils-2.14/bfd/prc.h \
+    binutils-2.14/ld/emulparams/armpalmos.sh \
+    binutils-2.14/ld/emulparams/m68kpalmos.sh \
+    binutils-2.14/ld/scripttempl/armpalmos.sc \
+    binutils-2.14/ld/scripttempl/m68kpalmos.sc \
+    gcc-2.95.3/gcc/ChangeLog.palmos \
+    gcc-2.95.3/gcc/config/arm/palmos.h \
+    gcc-2.95.3/gcc/config/m68k/fpexcept.c \
+    gcc-2.95.3/gcc/config/m68k/fpexcept.c \
+    gcc-2.95.3/gcc/config/m68k/lb1sf68palmos.asm \
+    gcc-2.95.3/gcc/config/m68k/m68kpalmos.h \
+    gcc-2.95.3/gcc/config/m68k/t-m68kpalmos \
+    gcc-2.95.3/gcc/config/m68k/xm-m68kpalmos.h \
+    gcc-2.95.3/gcc/config/rs6000/x-darwin \
+    gcc-2.95.3/gcc/config/t-palmos
+
+
+  cat prc-tools-"$pkgver"/*.palmos.diff | patch -p0 -f
 
   # patch -p0 -i 0000-relax_type-tc-m68k-h.patch
   # patch -p0 -i 0001-relax_type-tc-m68k-c.patch
@@ -67,6 +104,7 @@ prepare() {
   patch -p0 -i 0010-gcc3-decl-c.patch
   patch -p0 -i 0011-config-cache.patch
   patch -p0 -i 0012-basename.patch
+  patch -p0 -i 0013-destdir.patch
 
   pushd "$srcdir/prc-tools-$pkgver"
   ln -s ../binutils-2.14 binutils
@@ -84,9 +122,9 @@ build() {
   options=(
     '--enable-targets=m68k-palmos'
     '--enable-languages=c,c++'
-    "--prefix=$pkgdir/usr"
-    "--infodir=$pkgdir/usr/share/info"
-    "--mandir=$pkgdir/usr/share/man"
+    "--prefix=/usr"
+    "--infodir=/usr/share/info"
+    "--mandir=/usr/share/man"
     '--host=i686-pc-linux-gnu'
     '--build=i686-pc-linux-gnu'
     '--with-palmdev-prefix=/opt/palmdev'
@@ -105,7 +143,7 @@ build() {
 
 package() {
   cd "$srcdir/build"
-  make MAKEINFO=true -j1 install
+  make DESTDIR="$pkgdir" MAKEINFO=true -j1 install
 
   rmdir "$pkgdir/usr/include"
   rm -f "$pkgdir/usr/lib/*.a"
@@ -113,4 +151,7 @@ package() {
   rm -rf "$pkgdir/usr/share/man"
   rm -rf "$pkgdir/usr/share/info"
   rm -rf "$pkgdir/usr/lib/libiberty.a"
+
+  mkdir -p "$pkgdir/usr/share/prc-tools"
+  cp "$srcdir"/M86k-PalmOS-GNU.yaml "$pkgdir/usr/share/prc-tools"
 }
