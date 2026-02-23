@@ -8,9 +8,9 @@ arch=('x86_64')
 url='http://gcc.gnu.org'
 license=('GPL-2.0-only' 'LGPL-2.1-only' 'GPL-3.0-only' 'LGPL-3.0-only')
 depends=('bash' 'libgcc' 'glibc')
-makedepends=('flex' 'bison' 'gcc49')
+makedepends=('flex' 'bison')
 optdepends=('palm-os-sdk-git')
-options=('!libtool' 'staticlibs' '!buildflags')
+options=('!libtool' 'staticlibs' '!buildflags' 'debug')
 conflicts=('prc-tools-remix')
 source=(
   "prc-tools-$pkgver.tar.gz::https://master.dl.sourceforge.net/project/prc-tools/prc-tools/$pkgver/prc-tools-$pkgver.tar.gz?viasf=1"
@@ -93,7 +93,7 @@ build() {
     '--disable-nls'
   )
 
-  CFLAGS="-std=gnu89 -w -O1 -fcommon -fno-strict-aliasing"
+  CFLAGS="-std=gnu89 -w -O1 -fcommon -fno-strict-aliasing -g"
 
   CFLAGS="$CFLAGS" \
     ../prc-tools-"$pkgver"/configure \
