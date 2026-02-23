@@ -1,6 +1,6 @@
 # Maintainer:  Spencer Colton <me@scolton.tech>
 
-pkgname='prc-tools'
+pkgname='prc-tools-sc'
 pkgver='2.3'
 pkgrel='1'
 pkgdesc='GCC for Palm OS'
